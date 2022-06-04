@@ -3,10 +3,14 @@ package com.api.personas.model;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.api.personas.util.Gender;
 
 @Entity
 @Table(name = "personas")
@@ -18,20 +22,30 @@ public class Persona {
 	private int dni;
 	private String name;
 	private String surName;
-	private String sex;
+
+	@Enumerated(EnumType.STRING)
+	private Gender gender;
 	private Date birth;
 
 	public Persona() {
 		super();
 	}
 
-	public Persona(int dni, String name, String surName, String sex, Date birth) {
+	public Persona(int dni, String name, String surName, Gender gender, Date birth) {
 		super();
 		this.dni = dni;
 		this.name = name;
 		this.surName = surName;
-		this.sex = sex;
+		this.gender = gender;
 		this.birth = birth;
+	}
+
+	public Gender getGender() {
+		return gender;
+	}
+
+	public void setGender(Gender gender) {
+		this.gender = gender;
 	}
 
 	public Long getId() {
@@ -64,14 +78,6 @@ public class Persona {
 
 	public void setSurName(String surName) {
 		this.surName = surName;
-	}
-
-	public String getSex() {
-		return sex;
-	}
-
-	public void setSex(String sex) {
-		this.sex = sex;
 	}
 
 	public Date getBirth() {

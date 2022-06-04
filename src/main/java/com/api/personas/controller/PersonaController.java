@@ -31,7 +31,7 @@ public class PersonaController {
 
 	@PostMapping("/add")
 	public ResponseEntity<Persona> addPersona(@RequestBody Persona persona) {
-		System.out.println(personaSVC.savePersona(persona));
+		personaSVC.savePersona(persona);
 		return new ResponseEntity(new Mensaje("cargado"), HttpStatus.OK);
 	}
 }

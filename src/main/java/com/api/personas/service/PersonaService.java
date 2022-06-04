@@ -17,12 +17,21 @@ public class PersonaService implements IPersona {
 	@Override
 	public Persona savePersona(Persona per) {
 
+		if (per.getName() == null || per.getGender() == null || per.getDni() == 0 || per.getSurName() == null) {
+			throw new RuntimeException();
+		}
+		if (per.getName().isEmpty() || per.getSurName().isEmpty()) {
+			throw new RuntimeException();
+		}
 		return personaRepo.save(per);
 	}
 
 	@Override
 	public Persona findByID(Long id) {
 
+		if (!personaRepo.existsById(id)) {
+			// throw new NotFoundException("Usuario no encontrado");
+		}
 		return personaRepo.findById(id).get();
 	}
 
