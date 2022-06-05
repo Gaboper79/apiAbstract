@@ -1,4 +1,4 @@
-package com.api.personas.dto;
+package com.api.personas.util;
 
 public class Mensaje {
 	private String mensaje;

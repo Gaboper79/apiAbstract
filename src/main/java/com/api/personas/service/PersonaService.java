@@ -5,8 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.api.personas.exception.BadRequestException;
+import com.api.personas.exception.ResourceNotfoundException;
 import com.api.personas.model.Persona;
 import com.api.personas.repository.PersonaRepository;
+import com.api.personas.util.Gender;
+import com.api.personas.util.Validaciones;
 
 @Service
 public class PersonaService implements IPersona {
@@ -16,29 +20,28 @@ public class PersonaService implements IPersona {
 
 	@Override
 	public Persona savePersona(Persona per) {
-
-		if (per.getName() == null || per.getGender() == null || per.getDni() == 0 || per.getSurName() == null) {
-			throw new RuntimeException();
-		}
-		if (per.getName().isEmpty() || per.getSurName().isEmpty()) {
-			throw new RuntimeException();
-		}
+		Validaciones.personaValida(per);
 		return personaRepo.save(per);
 	}
 
 	@Override
 	public Persona findByID(Long id) {
 
-		if (!personaRepo.existsById(id)) {
-			// throw new NotFoundException("Usuario no encontrado");
-		}
-		return personaRepo.findById(id).get();
+		return personaRepo.findById(id)
+				.orElseThrow(() -> new ResourceNotfoundException("Usuario no encontrado con el id: " + id));
 	}
 
 	@Override
-	public void saveSex(Long id, Boolean sex) {
-		Persona persona = personaRepo.findById(id).get();
-		System.out.println(persona);
+	public String saveGender(Long id, Gender gender) {
+
+		if (!Validaciones.genderIncludes(gender.toString())) {
+			throw new BadRequestException("Genero no permitido");
+		}
+		Persona persona = this.findByID(id);
+
+		persona.setGender(gender);
+		this.savePersona(persona);
+		return "Gender modificado exitosamente";
 
 	}
 
