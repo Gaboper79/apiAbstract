@@ -23,7 +23,7 @@ import com.api.personas.validator.PersonaValidator;
 
 @RestController
 @RequestMapping("api/persona")
-@CrossOrigin
+@CrossOrigin(origins = "")
 public class PersonaController {
 
 	@Autowired
