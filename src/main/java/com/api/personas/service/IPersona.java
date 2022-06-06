@@ -16,8 +16,8 @@ public interface IPersona {
 
 	public PersonaDTO findByID(Long id) throws ApiResourceNotfoundException;
 
-	public PersonaDTO findBySurName(String surname);
+	public List<PersonaDTO> findBySurName(String surname) throws ApiUnprocessableEntityException;
 
-	public PersonaDTO findByDni(int dni);
+	public PersonaDTO findByDni(int dni) throws ApiResourceNotfoundException;
 
 }

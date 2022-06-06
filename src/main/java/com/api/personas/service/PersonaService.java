@@ -1,7 +1,6 @@
 package com.api.personas.service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -70,18 +69,27 @@ public class PersonaService implements IPersona {
 	}
 
 	@Override
-	public PersonaDTO findBySurName(String surname) {
-		Optional<Persona> personas = personaRepo.findBySurName(surname);
-		if (personas.isPresent()) {
-			return null;
+	public List<PersonaDTO> findBySurName(String surname) throws ApiUnprocessableEntityException {
+		if (surname.length() < 3) {
+			throw new ApiUnprocessableEntityException("El Apellido debe contener al menos 3 caracteres");
 		}
-		return null;
+
+		List<Persona> personas = personaRepo.findBySurNameLike("%" + surname + "%");
+
+		List<PersonaDTO> personasDTO = personas.stream().map((persona) -> convertPersonaToDTO(persona))
+				.collect(Collectors.toList());
+		return personasDTO;
 	}
 
-	@Override
-	public PersonaDTO findByDni(int dni) {
+	public PersonaDTO findByDni(int dni) throws ApiResourceNotfoundException {
 
-		return null;
+		Persona persona = personaRepo.findByDni(dni);
+		if (persona == null) {
+			throw new ApiResourceNotfoundException("DNI no encontrado");
+		}
+		System.out.println(persona);
+		PersonaDTO personaDTO = convertPersonaToDTO(persona);
+		return personaDTO;
 	}
 
 	// convert persona to DTO

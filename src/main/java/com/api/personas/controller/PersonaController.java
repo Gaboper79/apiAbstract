@@ -60,4 +60,19 @@ public class PersonaController {
 
 		return personaSVC.saveGender(personaId, gender);
 	}
+
+//find by apellido
+	@GetMapping("/surname")
+	public List<PersonaDTO> findBySurName(@RequestParam("surname") String surname)
+			throws ApiUnprocessableEntityException {
+		return personaSVC.findBySurName(surname);
+	}
+
+	// find by dni
+
+	@GetMapping("/dni")
+	public PersonaDTO findByDni(@RequestParam("dni") int dni)
+			throws ApiUnprocessableEntityException, ApiResourceNotfoundException {
+		return personaSVC.findByDni(dni);
+	}
 }
