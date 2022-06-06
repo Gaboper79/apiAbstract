@@ -17,4 +17,6 @@ public interface PersonaRepository extends JpaRepository<Persona, Long> {
 
 	@Override
 	public List<Persona> findAll();
+
+	public boolean existsByDni(Long id);
 }

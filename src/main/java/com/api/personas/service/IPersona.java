@@ -4,13 +4,13 @@ import java.util.List;
 
 import com.api.personas.dto.PersonaDTO;
 import com.api.personas.exception.ApiResourceNotfoundException;
-import com.api.personas.util.Gender;
+import com.api.personas.exception.ApiUnprocessableEntityException;
 
 public interface IPersona {
 
-	public PersonaDTO savePersona(PersonaDTO per);
+	public PersonaDTO savePersona(PersonaDTO per) throws ApiUnprocessableEntityException;
 
-	public String saveGender(Long id, Gender gender);
+	public String saveGender(Long id, String gender) throws ApiResourceNotfoundException;
 
 	public List<PersonaDTO> findAll();
 

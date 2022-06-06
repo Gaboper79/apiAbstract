@@ -19,7 +19,6 @@ import com.api.personas.dto.PersonaDTO;
 import com.api.personas.exception.ApiResourceNotfoundException;
 import com.api.personas.exception.ApiUnprocessableEntityException;
 import com.api.personas.service.PersonaService;
-import com.api.personas.util.Gender;
 import com.api.personas.validator.PersonaValidator;
 
 @RestController
@@ -56,7 +55,8 @@ public class PersonaController {
 
 	// update gender
 	@PutMapping("/updategender/{id}")
-	public String updateGender(@PathVariable("id") long personaId, @RequestParam("gender") Gender gender) {
+	public String updateGender(@PathVariable("id") long personaId, @RequestParam("gender") String gender)
+			throws ApiResourceNotfoundException {
 
 		return personaSVC.saveGender(personaId, gender);
 	}

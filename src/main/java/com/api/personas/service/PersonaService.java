@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.api.personas.dto.PersonaDTO;
 import com.api.personas.exception.ApiResourceNotfoundException;
+import com.api.personas.exception.ApiUnprocessableEntityException;
 import com.api.personas.model.Persona;
 import com.api.personas.repository.PersonaRepository;
 import com.api.personas.util.Gender;
@@ -24,13 +25,18 @@ public class PersonaService implements IPersona {
 	private ModelMapper mapper;
 
 	@Override
-	public PersonaDTO savePersona(PersonaDTO perDTO) {
+	public PersonaDTO savePersona(PersonaDTO perDTO) throws ApiUnprocessableEntityException {
+
+		if (personaRepo.existsByDni(perDTO.getDni())) {
+
+			throw new ApiUnprocessableEntityException("Dni existente");
+		}
 
 		Persona per = convertDTOToPersona(perDTO);
 
 		Persona personaRta = personaRepo.save(per);
-
-		return convertPersonaToDTO(personaRta);
+		PersonaDTO personaDto = convertPersonaToDTO(personaRta);
+		return personaDto;
 	}
 
 	@Override
@@ -44,16 +50,15 @@ public class PersonaService implements IPersona {
 	}
 
 	@Override
-	public String saveGender(Long id, Gender gender) {
+	public String saveGender(Long id, String gender) throws ApiResourceNotfoundException {
 
-//		
-//		Persona persona = this.findByID(id);
-//
-//		persona.setGender(gender);
-//		this.savePersona(persona);
-//		return "Gender modificado exitosamente";
-//
-		return null;
+		Persona persona = personaRepo.findById(id)
+				.orElseThrow(() -> new ApiResourceNotfoundException("Id no encontrado"));
+
+		persona.setGender(Gender.valueOf(gender.toUpperCase()));
+		personaRepo.save(persona);
+		return "Gender modificado exitosamente";
+
 	}
 
 	@Override
@@ -81,13 +86,17 @@ public class PersonaService implements IPersona {
 
 	// convert persona to DTO
 	private PersonaDTO convertPersonaToDTO(Persona persona) {
+
 		PersonaDTO personaDTO = mapper.map(persona, PersonaDTO.class);
+
+		// personaDTO.setGender(personaDTO.getGender().toUpperCase());
+
 		return personaDTO;
 	}
 
 	// convert DTO to persona
 	private Persona convertDTOToPersona(PersonaDTO personaDTO) {
-
+		personaDTO.setGender(personaDTO.getGender().toUpperCase());
 		Persona persona = mapper.map(personaDTO, Persona.class);
 		return persona;
 	}
