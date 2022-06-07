@@ -32,10 +32,10 @@ public class PersonaController {
 	@Autowired
 	private PersonaValidator personaValid;
 
-	@GetMapping("/all")
-	public List<PersonaDTO> getAllPersona() {
-		return personaSVC.findAll();
-	}
+//	@GetMapping("/all")
+//	public List<PersonaDTO> getAllPersona() {
+//		return personaSVC.findAll();
+//	}
 
 	// getbyid
 	@GetMapping("/{id}")
