@@ -53,7 +53,7 @@ public class PersonaController {
 
 	}
 
-	// update gender
+	// update genders
 	@PutMapping("/updategender/{id}")
 	public String updateGender(@PathVariable("id") long personaId, @RequestParam("gender") String gender)
 			throws ApiResourceNotfoundException {
